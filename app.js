@@ -3,7 +3,6 @@ var app = express();
 var path = require('path');
 var bodyParser = require('body-parser');
 
-// bring in pg module
 var pg = require('pg');
 var connectionString = '';
 if(process.env.DATABASE_URL != undefined) {
@@ -21,12 +20,10 @@ app.get('/people', function(req, res) {
     pg.connect(connectionString, function(err, client, done) {
         var query = client.query('SELECT * FROM people ORDER BY id DESC;');
 
-        // Stream results back one row at a time
         query.on('row', function(row) {
             results.push(row);
         });
 
-        // close connection
         query.on('end', function() {
             client.end();
             return res.json(results);
@@ -59,14 +56,12 @@ app.post('/people', function(req, res) {
                 }
             });
     });
-
 });
 
 app.get('/*', function(req, res) {
     var file = req.params[0] || '/views/index.html';
     res.sendFile(path.join(__dirname, './public', file));
 });
-
 
 app.set('port', process.env.PORT || 5000);
 app.listen(app.get('port'), function() {

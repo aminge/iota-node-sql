@@ -20,9 +20,8 @@ function postData() {
         data: values,
         success: function(data) {
             if(data) {
-                // everything went ok
-                console.log('from server:', data);
                 getData();
+                $('input[type="text"]').val('');
             } else {
                 console.log('error');
             }
@@ -35,18 +34,12 @@ function getData() {
         type: 'GET',
         url: '/people',
         success: function(data) {
-            console.log(data);
 
             $('#info').children().remove();
 
             for (var i = 0; i < data.length; i++) {
                 appendPersonToDOM(data[i]);
             }
-
-            //Object.keys(data).forEach(function(person, index) {
-            //    $('#info').append('<li>Name: ' + data.person.name + '; Address: ' + data.person.address +
-            //    ', ' + data.person.city + ', ' + data.person.state + ' ' + data.person.zip_code + '</li>');
-            //});
         }
     });
 }
